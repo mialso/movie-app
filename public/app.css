@@ -1,0 +1,27 @@
+html {
+  width: 100%;
+  height: 100%;
+}
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  background-color: #ccc;
+  display: flex;
+  flex-direction: column;
+}
+.content {
+  display: flex;
+  flex-direction: row;
+}
+.item {
+  background-color: #fff;
+  width: 120px;
+  height: 200px;
+  margin: 10px 15px 10px 15px;
+}
