@@ -8,7 +8,7 @@ body {
   margin: 0px;
 }
 
-#app {
+.app {
   width: 100%;
   height: 100%;
   background-color: #ccc;
@@ -19,9 +19,17 @@ body {
   display: flex;
   flex-direction: row;
 }
+.content button {
+  width: 20px;
+}
 .item {
   background-color: #fff;
   width: 120px;
   height: 200px;
   margin: 10px 15px 10px 15px;
+  border: 1px solid #fff;
+}
+.item:hover {
+  cursor: pointer;
+  border: 1px solid #f00;
 }
