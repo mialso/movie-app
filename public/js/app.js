@@ -20,10 +20,9 @@
     })
   })
 
-  function calculateItems () {
+  function calculateItems (maxItems) {
     const initialItems = []
-    // 230 x 350
-    for (let i = 0; i <= window.innerWidth / 120; ++i) {
+    for (let i = 0; i < maxItems; ++i) {
       initialItems.push(new Item(i))
     }
     return initialItems
@@ -31,22 +30,34 @@
 
   const store = new Vuex.Store({
     state: {
-      items: calculateItems(),
+      catItems: calculateItems(3),
+      // 230 x 350 movie item size
+      items: calculateItems(window.innerWidth / 120),
       categories: categories.slice(0),
       movies: movies.slice(0)
     },
     mutations: {
       moveRight: state => {
-        console.log('moveRight')
         state.items = state.items.map((item) => {
           return new Item(item.number + 1)
         })
       },
       moveLeft: state => {
-        console.log('moveLeft')
         state.items = state.items.map((item) => {
           return new Item(item.number - 1)
         })
+      },
+      moveUp: state => {
+        state.catItems = state.catItems.map((item) => {
+          return new Item((item.number + 1) % 3)
+        })
+        state.items = calculateItems(window.innerWidth / 120)
+      },
+      moveDown: state => {
+        state.catItems = state.catItems.map((item) => {
+          return new Item(item.number === 0 ? 2 : (item.number - 1))
+        })
+        state.items = calculateItems(window.innerWidth / 120)
       }
     },
     actions: {
@@ -74,6 +85,7 @@
       <div class="app">
         <top-menu></top-menu>
         <category></category>
+        <div class="footer"></div>
       </div>`,
     store: store
   })
