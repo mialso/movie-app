@@ -10,7 +10,7 @@ Vue.component('movies', {
         v-for="(item, index) in items" :key="item.number"
         v-bind:class="index  === 1 ? 'active' : ''"
         class="item">
-        <movie :movie="movies[item.number]"></movie>
+        <movie v-if="movies[item.number]" :movie="movies[item.number]"></movie>
       </div>
       <button 
         v-bind:style="{ visibility: scrollRight ? 'visible' : 'hidden'}"
@@ -70,8 +70,21 @@ Vue.component('movies', {
 })
 
 Vue.component('movie', {
-  template: `<div class="movie">{{movie.name}}</div>`,
+  template: `
+    <div class="movie">
+      <div v-bind:class="movieClass"></div>
+      <p>{{movie.name}}</p>
+    </div>`,
+  data() {
+    return { movieClass: 'icon'}
+  },
   props: {
     movie: Object
+  },
+  created: function () {
+    this.movieClass = 'icon icon-'.concat(this.movie.name)
+  },
+  beforeUpdate () {
+    this.movieClass = 'icon icon-'.concat(this.movie.name)
   }
 })

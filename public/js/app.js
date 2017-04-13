@@ -7,6 +7,12 @@
     this.categoryId = categoryId
     this.name = `movie ${this.id}`
     this.description = `description for movie ${this.id}`
+    switch (id) {
+      case '1': this.name = 'w-2008'; break
+      case '2': this.name = 'kill-bill-2003'; break
+      case '3': this.name = 'thx2-1971'; break
+      default: this.name = `movie ${this.id}`
+    }
   }
   const categories = [
     {id: 'c1', name: '24 hours', items: ['1', '2', '3', '4', '5', '6', '7']},
@@ -27,12 +33,13 @@
     }
     return initialItems
   }
+  const movieItems = parseInt(window.innerWidth / 200)
 
   const store = new Vuex.Store({
     state: {
       catItems: calculateItems(3),
       // 230 x 350 movie item size
-      items: calculateItems(window.innerWidth / 120),
+      items: calculateItems(movieItems),
       categories: categories.slice(0),
       movies: movies.slice(0)
     },
@@ -51,13 +58,13 @@
         state.catItems = state.catItems.map((item) => {
           return new Item((item.number + 1) % 3)
         })
-        state.items = calculateItems(window.innerWidth / 120)
+        state.items = calculateItems(movieItems)
       },
       moveDown: state => {
         state.catItems = state.catItems.map((item) => {
           return new Item(item.number === 0 ? 2 : (item.number - 1))
         })
-        state.items = calculateItems(window.innerWidth / 120)
+        state.items = calculateItems(movieItems)
       }
     },
     actions: {
