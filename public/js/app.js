@@ -2,29 +2,17 @@
   function Item (number) {
     this.number = number
   }
-  function Movie (id, categoryId) {
-    this.id = `m${id}`
-    this.categoryId = categoryId
-    this.name = `movie ${this.id}`
-    this.description = `description for movie ${this.id}`
-    switch (id) {
-      case '1': this.name = 'w-2008'; break
-      case '2': this.name = 'kill-bill-2003'; break
-      case '3': this.name = 'thx2-1971'; break
-      default: this.name = `movie ${this.id}`
-    }
+  function Movie (movieData) {
+    this.id = movieData.id
+    this.name = movieData.name
+    this.description = `year ${movieData.year}`
+    this.movieClass = `icon icon-${movieData.name.split(' ').join('_')}-${movieData.year}`
   }
   const categories = [
     {id: 'c1', name: '24 hours', items: ['1', '2', '3', '4', '5', '6', '7']},
     {id: 'c2', name: 'comming', items: ['8', '9', '10', '11', '12', '13', '14', '15']},
     {id: 'c3', name: 'my choice', items: ['16', '17', '18', '19', '20', '21']}
   ]
-  const movies = []
-  categories.forEach((category) => {
-    category.items.forEach((id) => {
-      movies.push(new Movie(id, category.id))
-    })
-  })
 
   function calculateItems (maxItems) {
     const initialItems = []
@@ -35,13 +23,28 @@
   }
   const movieItems = parseInt(window.innerWidth / 200)
 
+  window.fetch('movies.json')
+  .then(function(response) {
+    if (response.ok) return response.json()
+    throw new Error('Response error')
+  })
+  .then(function(jsonData) {
+    setTimeout(() => { 
+      store.state.movies = jsonData.movies.map(item => new Movie(item))
+      store.state.loading = false
+    }, 2000)
+  })
+  .catch(function(error) {
+  })
+
   const store = new Vuex.Store({
     state: {
       catItems: calculateItems(3),
       // 230 x 350 movie item size
       items: calculateItems(movieItems),
       categories: categories.slice(0),
-      movies: movies.slice(0)
+      movies: [],
+      loading: true
     },
     mutations: {
       moveRight: state => {
@@ -82,7 +85,7 @@
     getters: {
       getMoviesByCategory: (state) => (categoryId) => {
         return state.movies
-          .filter(movie => movie.categoryId === categoryId)
+          .filter(movie => categories[categoryId[1] - 1].items.indexOf(movie.id) !== -1)
       }
     }
   })

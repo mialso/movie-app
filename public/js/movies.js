@@ -6,12 +6,15 @@ Vue.component('movies', {
         v-on:click="moveLeft">
         \<
       </button>
+      <div v-if="loading">Loading...</div>
+      <template v-else>
       <div
         v-for="(item, index) in items" :key="item.number"
         v-bind:class="index  === 1 ? 'active' : ''"
         class="item">
         <movie v-if="movies[item.number]" :movie="movies[item.number]"></movie>
       </div>
+      </template>
       <button 
         v-bind:style="{ visibility: scrollRight ? 'visible' : 'hidden'}"
         v-on:click="moveRight">
@@ -61,10 +64,13 @@ Vue.component('movies', {
   },
   computed: {
     items() {
-      return this.$store.state.items
+      return this.$store.state.items || []
     },
     movies() {
       return this.$store.getters.getMoviesByCategory(this.categoryId)
+    },
+    loading() {
+      return this.$store.state.loading
     }
   }
 })
@@ -72,7 +78,7 @@ Vue.component('movies', {
 Vue.component('movie', {
   template: `
     <div class="movie">
-      <div v-bind:class="movieClass"></div>
+      <div v-bind:class="movie.movieClass"></div>
       <p>{{movie.name}}</p>
     </div>`,
   data() {
@@ -80,11 +86,5 @@ Vue.component('movie', {
   },
   props: {
     movie: Object
-  },
-  created: function () {
-    this.movieClass = 'icon icon-'.concat(this.movie.name)
-  },
-  beforeUpdate () {
-    this.movieClass = 'icon icon-'.concat(this.movie.name)
   }
 })
