@@ -17,7 +17,7 @@ Vue.component('movies', {
       <template v-else>
       <div
         v-for="(item, index) in items" :key="item.number"
-        v-bind:class="{active: index  === 1}"
+        v-bind:class="{active: index  === 1, empty: movies.length <= item.number}"
         class="item">
         <movie v-if="movies[item.number]" :movie="movies[item.number]"></movie>
       </div>
