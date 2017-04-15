@@ -1,11 +1,18 @@
 Vue.component('movies', {
   template: `
-    <div class="content" v-on:wheel.stop="wheelHandler">
-      <button 
-        v-bind:style="{ visibility: scrollLeft ? 'visible' : 'hidden'}"
-        v-on:click="moveLeft">
-        \<
-      </button>
+    <div class="content"
+      v-bind:class="{active}"
+      v-on:wheel.stop="wheelHandler"
+      v-on:mouseenter="handleMouseEnter"
+      v-on:mouseleave="handleMouseLeave"
+      >
+      <svg v-on:click="moveLeft" width="25px" height="200px"
+        v-bind:style="{ visibility: scrollLeft ? 'visible' : 'hidden'}">
+        <path class="svg-button" 
+          d="M25,0 L0,100 L25,200"
+          style="stroke-width: 3px; fill:none;"
+        />
+      </svg>
       <div v-if="loading">Loading...</div>
       <template v-else>
       <div
@@ -15,10 +22,13 @@ Vue.component('movies', {
         <movie v-if="movies[item.number]" :movie="movies[item.number]"></movie>
       </div>
       </template>
-      <button 
-        v-bind:style="{ visibility: scrollRight ? 'visible' : 'hidden'}"
-        v-on:click="moveRight">
-        \>
+      <svg v-on:click="moveRight" width="25px" height="200px"
+        v-bind:style="{ visibility: scrollRight ? 'visible' : 'hidden'}">
+        <path class="svg-button" 
+          d="M0,0 L25,100 L0,200"
+          style="stroke-width: 3px; fill:none;"
+        />
+      </svg>
       </button>
     </div>`,
   props: {
@@ -27,7 +37,8 @@ Vue.component('movies', {
   data() {
     return {
       scrollLeft: false,
-      scrollRight: false
+      scrollRight: false,
+      active: false
     }
   },
   created: function () {
@@ -60,6 +71,12 @@ Vue.component('movies', {
     wheelHandler (e) {
       if (e.deltaY > 0) this.moveRight()
       if (e.deltaY < 0) this.moveLeft()
+    },
+    handleMouseEnter () {
+      this.active = true
+    },
+    handleMouseLeave () {
+      this.active = false
     }
   },
   computed: {

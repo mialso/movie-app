@@ -27,9 +27,6 @@ body {
 .category .text {
   flex-basis: 10%;
 }
-.category .text > button {
-  transform: rotate(-90deg);
-}
 .category .current {
   flex-basis: 80%;
   display: flex;
@@ -42,6 +39,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 }
 .content button {
   width: 20px;
@@ -58,4 +56,22 @@ body {
 }
 .item.active {
   border: 2px solid #ff0;
+}
+.category .svg-button {
+  stroke: #000;
+}
+.category.active .text .svg-button {
+  stroke: #0f0;
+}
+.category .text svg:hover .svg-button {
+  stroke: #ff0;
+}
+.category svg:hover {
+  cursor: pointer;
+}
+.content svg:hover .svg-button {
+  stroke: #ff0;
+}
+.content.active .svg-button {
+  stroke: #0f0;
 }
