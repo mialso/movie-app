@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "convert-images": "cd samples/posters/; for f in *.jpg ; do convert \"$f\" -resize 173 \"173/${f}\" ; done",
-    "build-sprite": "sprity create ./public/ ./samples/posters/173/*.jpg --css-path / -s images.css --name images --format jpg",
+    "build-sprite": "sprity create ./public/ ./samples/posters/173/*.jpg --css-path / -s images.css --name images --format jpg --margin 0",
     "build-json": "node scripts/build-json-data.js"
   },
   "author": "mialso",

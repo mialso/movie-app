@@ -5,28 +5,44 @@ Vue.component('category', {
       >
       <div class="text next"
         v-on:wheel.stop="wheelHandler"
+        v-on:click="next"
         v-on:mouseenter="handleMouseEnter"
         v-on:mouseleave="handleMouseLeave">
-        <svg v-on:click="next" width="100px" height="20px">
+        <svg width="200px" height="90px" xmlns="http://www.w3.org/2000/svg"
+                 xmlns:xlink="http://www.w3.org/1999/xlink">
+          <defs>
+            <linearGradient id="catName" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#000;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#fff;stop-opacity:1" />
+            </linearGradient>
+          </defs>
           <path class="svg-button" 
-            d="M0,20 L50,0 L100,20"
+            d="M20,20 L70,0 L120,20"
             style="stroke-width: 3px; fill:none;"
           />
+          <text fill="url(#catName)" font-size="40px" x="0" y="60">{{nextCategory.name}}</text>
         </svg>
-        <p>{{nextCategory.name}}</p>
       </div>
       <div class="current">
-        <p>{{currentCategory.name}}</p>
+        <div class="name">{{currentCategory.name}}</div>
         <movies :categoryId="currentCategory.id"></movies>
       </div>
       <div class="text prev"
         v-on:wheel.stop="wheelHandler"
+        v-on:click="prev"
         v-on:mouseenter="handleMouseEnter"
         v-on:mouseleave="handleMouseLeave">
-        <p>{{prevCategory.name}}</p>
-        <svg v-on:click="prev" width="100px" height="20px">
+        <svg width="200px" height="90px" xmlns="http://www.w3.org/2000/svg"
+                 xmlns:xlink="http://www.w3.org/1999/xlink">
+          <defs>
+            <linearGradient id="catName" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#fff;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#000;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <text fill="url(#catName)" font-size="40px" x="0" y="50">{{prevCategory.name}}</text>
           <path class="svg-button" 
-            d="M0,0 L50,10 L100,0"
+            d="M20,70 L70,80 L120,70"
             style="stroke-width: 3px; fill:none;"
           />
         </svg>

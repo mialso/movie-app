@@ -17,7 +17,7 @@ Vue.component('movies', {
       <template v-else>
       <div
         v-for="(item, index) in items" :key="item.number"
-        v-bind:class="index  === 1 ? 'active' : ''"
+        v-bind:class="{active: index  === 1}"
         class="item">
         <movie v-if="movies[item.number]" :movie="movies[item.number]"></movie>
       </div>
@@ -96,7 +96,12 @@ Vue.component('movie', {
   template: `
     <div class="movie">
       <div v-bind:class="movie.movieClass"></div>
-      <p>{{movie.name}}</p>
+      <div class="foot">
+        <div class="movie-name">{{movie.name}}</div>
+        <div class="movie-info">
+           <svg><use xlink:href="#bell" transform="rotate(45, 20, 20)"></use></svg>
+        </div>
+      </div>
     </div>`,
   data() {
     return { movieClass: 'icon'}

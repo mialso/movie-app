@@ -21,7 +21,7 @@
     }
     return initialItems
   }
-  const movieItems = parseInt(window.innerWidth / 200)
+  const movieItems = parseInt(window.innerWidth / 240)
 
   window.fetch('movies.json')
   .then(function(response) {
