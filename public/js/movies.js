@@ -91,22 +91,3 @@ Vue.component('movies', {
     }
   }
 })
-
-Vue.component('movie', {
-  template: `
-    <div class="movie">
-      <div v-bind:class="movie.movieClass"></div>
-      <div class="foot">
-        <div class="movie-name">{{movie.name}}</div>
-        <div class="movie-info">
-           <svg><use xlink:href="#bell" transform="rotate(45, 20, 20)"></use></svg>
-        </div>
-      </div>
-    </div>`,
-  data() {
-    return { movieClass: 'icon'}
-  },
-  props: {
-    movie: Object
-  }
-})

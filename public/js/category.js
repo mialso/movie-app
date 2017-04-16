@@ -64,10 +64,10 @@ Vue.component('category', {
   },
   methods: {
     next () {
-      this.$store.commit('moveUp')
+      this.$store.commit('moveDown')
     },
     prev () {
-      this.$store.commit('moveDown')
+      this.$store.commit('moveUp')
     },
     wheelHandler (e) {
       if (e.deltaY > 0) this.prev()

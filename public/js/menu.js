@@ -11,33 +11,20 @@ Vue.component('topMenu', {
         <span>{{time}}</span>
       </div>
     </div>`,
-  data: function () {
-    return {
-      day: '',
-      date: '',
-      time: '',
-      intervalId: null
+  computed: {
+    date() {
+      const date = new Date(this.$store.state.appTime)
+      return `${date.getDate()} ${this.getMonthName(date.getMonth())}`
+    },
+    day() {
+      return this.getDayName(new Date(this.$store.state.appTime).getDay())
+    },
+    time() {
+      const date = new Date(this.$store.state.appTime)
+      return `${this.getHours(date.getHours())}:${this.getHours(date.getMinutes())}`
     }
   },
-  created () {
-    console.log('create')
-    this.updateTime()
-    this.timer = window.setInterval(this.updateTime, 60000)
-  },
-  beforeUpdate () {
-  },
-  destroyed () {
-    console.log('destroy')
-  },
   methods: {
-    updateTime () {
-      console.log('update time')
-      const date = new Date()
-      this.day = this.getDayName(date.getDay())
-      this.date = `${date.getDate()} ${this.getMonthName(date.getMonth())}`
-      // TODO refactor all this
-      this.time = `${this.getHours(date.getHours())}:${this.getHours(date.getMinutes())}`
-    },
     getHours (hours) {
       if(1 === hours.toString().length) return `0${hours}`
       return `${hours}`

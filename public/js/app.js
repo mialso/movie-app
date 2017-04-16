@@ -37,15 +37,10 @@
       const time = Date.now()
       const today = new Date()
       const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime() + dayMilisec
-      console.log(todayEnd)
       const tomorrowEnd = todayEnd + dayMilisec
-      console.log(tomorrowEnd)
-      //const todayHoursLeft = (dayMilisec - (time % dayMilisec)) / hourMilisec
       const todayHoursLeft = 24 - today.getHours() - 1
-      console.log(`todayHoursLeft: ${todayHoursLeft}`)
-      //const todayMovies = Math.ceil(todayHoursLeft) * 2
       const todayMovies = todayHoursLeft * 2
-      console.log(`24 hour movies: ${todayMovies}`)
+
       store.state.movies = jsonData.movies.map(item => {
         let showTime = 0
         if (item.id <= todayMovies) {
@@ -55,6 +50,7 @@
         }
         return new Movie(item, showTime)
       })
+
       store.state.movies.forEach(movie => {
         if (movie.choosen) categories[2].items.push(movie.id)
         if (movie.showTime < todayEnd) {
@@ -70,6 +66,7 @@
   .catch(function(error) {
   })
 
+  window.setInterval(() => {store.state.appTime = Date.now()}, 60000)
   const store = new Vuex.Store({
     state: {
       catItems: calculateItems(3),
@@ -77,7 +74,8 @@
       items: calculateItems(movieItems),
       categories: categories.slice(0),
       movies: [],
-      loading: true
+      loading: true,
+      appTime: Date.now()
     },
     mutations: {
       moveRight: state => {
