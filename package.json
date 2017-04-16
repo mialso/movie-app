@@ -5,9 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "convert-images": "cd samples/posters/; for f in *.jpg ; do convert \"$f\" -resize 173 \"173/${f}\" ; done",
-    "build-sprite": "sprity create ./public/ ./samples/posters/173/*.jpg --css-path / -s images.css --name images --format jpg --margin 0",
-    "build-json": "node scripts/build-json-data.js"
+    "clean-up": "ls public && rm -r public || echo 'nothing to clean'",
+    "convert-images": "which convert && cd samples/posters/; for f in *.jpg ; do convert \"$f\" -resize 173 \"173/${f}\" ; done",
+    "build-sprite": "sprity create ./source/images/ ./samples/posters/173/*.jpg --css-path /images/ -s ../css/images.css --name images --format jpg --margin 0",
+    "build-json": "node scripts/build-json-data.js",
+    "build-js": "cd source/js ; cat libs/vue.js libs/vuex.js movie.js movies.js category.js menu.js app.js > ../../public/script.js",
+    "build-css": "cat source/css/*.css > public/style.css",
+    "copy-assets": "cp -r ./source/images ./public/images && cp ./source/index-dist.html ./public/index.html",
+    "build": "npm run clean-up && mkdir public && npm run convert-images && npm run build-sprite && npm run build-json && npm run build-js && npm run build-css && npm run copy-assets && echo 'build to \"public/\" success'",
+    "start": "npm run build && http-server -p 5999 public/",
+    "start-dev": "http-server -p 5999 source/"
   },
   "author": "mialso",
   "license": "ISC",

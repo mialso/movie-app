@@ -6,15 +6,13 @@ body {
   width: 100%;
   height: 100%;
   margin: 0px;
-  background-image: url(images/background.png);
-  background-size: cover;
 }
 .app {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-image: url(images/background.png);
+  background-image: url(/images/background.png);
   background-size: cover;
   color: #fff;
 }
@@ -59,9 +57,6 @@ body {
   flex-basis: 8%;
 }
 .category .svg-button {
-/*
-  stroke: rgba(255, 255, 255, 0.4);
-  */
   stroke: #555555;
 }
 .category.active .text .svg-button {

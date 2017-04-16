@@ -14,9 +14,3 @@ const movies = fs.readdirSync(path.resolve('samples/posters'))
   })
 
 fs.writeFileSync(path.resolve('public/movies.json'), JSON.stringify({movies}))
-/*
-movies.forEach((movie) => {
-  console.log(movie)
-})
-*/
-
