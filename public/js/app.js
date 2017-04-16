@@ -2,16 +2,18 @@
   function Item (number) {
     this.number = number
   }
-  function Movie (movieData) {
+  function Movie (movieData, showTime) {
     this.id = movieData.id
     this.name = movieData.name
+    this.showTime = showTime
+    this.choosen = (movieData.id % 8) === 0
     this.description = `year ${movieData.year}`
     this.movieClass = `icon icon-${movieData.name.split(' ').join('_')}-${movieData.year}`
   }
   const categories = [
-    {id: 'c1', name: '24 hours', items: ['1', '2', '3', '4', '5', '6', '7']},
-    {id: 'c2', name: 'comming', items: ['8', '9', '10', '11', '12', '13', '14', '15']},
-    {id: 'c3', name: 'my choice', items: ['16', '17', '18', '19', '20', '21']}
+    {id: 'c1', name: '24 hours', items: []},
+    {id: 'c2', name: 'comming', items: []},
+    {id: 'c3', name: 'my choice', items: []}
   ]
 
   function calculateItems (maxItems) {
@@ -21,7 +23,7 @@
     }
     return initialItems
   }
-  const movieItems = parseInt(window.innerWidth / 240)
+  const movieItems = Math.floor(window.innerWidth / 240)
 
   window.fetch('movies.json')
   .then(function(response) {
@@ -30,7 +32,38 @@
   })
   .then(function(jsonData) {
     setTimeout(() => { 
-      store.state.movies = jsonData.movies.map(item => new Movie(item))
+      const hourMilisec = 1000 * 60 * 60
+      const dayMilisec = hourMilisec * 24
+      const time = Date.now()
+      const today = new Date()
+      const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime() + dayMilisec
+      console.log(todayEnd)
+      const tomorrowEnd = todayEnd + dayMilisec
+      console.log(tomorrowEnd)
+      //const todayHoursLeft = (dayMilisec - (time % dayMilisec)) / hourMilisec
+      const todayHoursLeft = 24 - today.getHours() - 1
+      console.log(`todayHoursLeft: ${todayHoursLeft}`)
+      //const todayMovies = Math.ceil(todayHoursLeft) * 2
+      const todayMovies = todayHoursLeft * 2
+      console.log(`24 hour movies: ${todayMovies}`)
+      store.state.movies = jsonData.movies.map(item => {
+        let showTime = 0
+        if (item.id <= todayMovies) {
+          showTime = Math.floor(Math.random() * (todayEnd - time)) + time
+        } else {
+          showTime = Math.floor(Math.random() * (tomorrowEnd - todayEnd)) + todayEnd
+        }
+        return new Movie(item, showTime)
+      })
+      store.state.movies.forEach(movie => {
+        if (movie.choosen) categories[2].items.push(movie.id)
+        if (movie.showTime < todayEnd) {
+          categories[0].items.push(movie.id)
+        } else {
+          categories[1].items.push(movie.id)
+        }
+      })
+      store.state.categories = categories.slice(0)
       store.state.loading = false
     }, 2000)
   })
