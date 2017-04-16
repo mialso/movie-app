@@ -8,7 +8,7 @@ Vue.component('category', {
         v-on:click="next"
         v-on:mouseenter="handleMouseEnter"
         v-on:mouseleave="handleMouseLeave">
-        <svg width="200px" height="90px" xmlns="http://www.w3.org/2000/svg"
+        <svg width="400px" height="90px" xmlns="http://www.w3.org/2000/svg"
                  xmlns:xlink="http://www.w3.org/1999/xlink">
           <defs>
             <linearGradient id="catName" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -23,16 +23,19 @@ Vue.component('category', {
           <text fill="url(#catName)" font-size="40px" x="0" y="60">{{nextCategory.name}}</text>
         </svg>
       </div>
-      <div class="current">
+      <div class="text current"
+        v-on:wheel.stop="wheelHandler"
+        v-on:mouseenter="handleMouseEnter"
+        v-on:mouseleave="handleMouseLeave">
         <div class="name">{{currentCategory.name}}</div>
-        <movies :categoryId="currentCategory.id"></movies>
       </div>
+      <movies :categoryId="currentCategory.id"></movies>
       <div class="text prev"
         v-on:wheel.stop="wheelHandler"
         v-on:click="prev"
         v-on:mouseenter="handleMouseEnter"
         v-on:mouseleave="handleMouseLeave">
-        <svg width="200px" height="90px" xmlns="http://www.w3.org/2000/svg"
+        <svg width="400px" height="90px" xmlns="http://www.w3.org/2000/svg"
                  xmlns:xlink="http://www.w3.org/1999/xlink">
           <defs>
             <linearGradient id="catName" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -67,8 +70,8 @@ Vue.component('category', {
       this.$store.commit('moveDown')
     },
     wheelHandler (e) {
-      if (e.deltaY > 0) this.next()
-      if (e.deltaY < 0) this.prev()
+      if (e.deltaY > 0) this.prev()
+      if (e.deltaY < 0) this.next()
     },
     handleMouseLeave () {
       this.active = false

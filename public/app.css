@@ -46,19 +46,23 @@ body {
 }
 .category .text {
   font-size: 40px;
-  flex-basis: 12%;
+  flex-basis: 10%;
 }
-.category .current {
-  flex-basis: 70%;
+.category .content {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  flex-basis: 70%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 .footer {
   flex-basis: 8%;
 }
 .category .svg-button {
+/*
   stroke: rgba(255, 255, 255, 0.4);
+  */
+  stroke: #555555;
 }
 .category.active .text .svg-button {
   stroke: #0080c0;
@@ -74,12 +78,6 @@ body {
 }
 .category svg:hover {
   cursor: pointer;
-}
-.content {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
 }
 .content .svg-button {
   stroke: rgba(255, 255, 255, 0.4);
@@ -138,4 +136,7 @@ body {
 }
 .movie-info {
   max-height: 50%;
+}
+svg text::selection {
+  background: none;
 }
