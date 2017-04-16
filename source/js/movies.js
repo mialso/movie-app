@@ -1,7 +1,7 @@
 Vue.component('movies', {
   template: `
     <div class="content"
-      v-bind:class="{active}"
+      v-bind:class="{active, my: categoryId === 'c3'}"
       v-on:wheel.stop="wheelHandler"
       v-on:mouseenter="handleMouseEnter"
       v-on:mouseleave="handleMouseLeave"

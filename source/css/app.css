@@ -115,6 +115,9 @@ body {
 .movie.my-choice .foot svg {
   fill: #0c3;
 }
+.content.my .movie.my-choice .foot svg:hover {
+  fill: #c03;
+}
 .foot {
   width: 95%;
   max-width: 95%;
