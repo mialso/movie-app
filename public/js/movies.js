@@ -84,7 +84,7 @@ Vue.component('movies', {
       return this.$store.state.items || []
     },
     movies() {
-      return this.$store.getters.getMoviesByCategory(this.categoryId)
+      return this.$store.getters.getMoviesByCategory(this.categoryId).sort((m1, m2) => m1.showTime - m2.showTime)
     },
     loading() {
       return this.$store.state.loading

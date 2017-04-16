@@ -111,7 +111,18 @@
         const category = context.state.categories.filter(cat => cat.id === categoryId)[0]
         if (category.items.slice(-1)[0] === lastMovieId) return
         context.commit('moveRight')
-      }
+      },
+      toggleMovieSelection: (context, movieId) => {
+        context.state.movies = context.state.movies.map((movie) => {
+          if (movie.id === movieId) {
+            movie.choosen 
+              ? context.state.categories[2].items = context.state.categories[2].items.filter((id) => id !== movieId)
+              : context.state.categories[2].items.push(movieId)
+            return Object.assign({}, movie, {choosen: !movie.choosen})
+          }
+          return movie
+        })
+      },
     },
     getters: {
       getMoviesByCategory: (state) => (categoryId) => {
