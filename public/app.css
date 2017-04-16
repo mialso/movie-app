@@ -57,26 +57,17 @@ body {
 .footer {
   flex-basis: 8%;
 }
-.content {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-.content button {
-  width: 20px;
-}
 .category .svg-button {
-  stroke: #000;
+  stroke: rgba(255, 255, 255, 0.4);
 }
 .category.active .text .svg-button {
-  stroke: #0f0;
+  stroke: #0080c0;
 }
 .category .text svg {
   display: block;
 }
 .category .text svg:hover .svg-button {
-  stroke: #ff0;
+  stroke: #fc0;
 }
 .category .current .name {
   font-size: 50px;
@@ -84,24 +75,31 @@ body {
 .category svg:hover {
   cursor: pointer;
 }
+.content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 .content .svg-button {
-  stroke: #fff;
+  stroke: rgba(255, 255, 255, 0.4);
 }
 .content svg:hover .svg-button {
-  stroke: #ff0;
+  stroke: #fc0;
 }
 .content.active .svg-button {
-  stroke: #0f0;
+  stroke: #0080c0;
 }
 .item {
   width: 180px;
   height: 320px;
 }
 .item:not(.empty) {
-  border: 2px solid #00f;
+  border: 1px solid #08c;
 }
 .item.active {
-  border: 2px solid #ff0;
+  border: 3px solid #fff;
+  box-shadow: 0px 0px 7px 5px rgba(255, 255, 255, 0.4);
 }
 .movie {
   display: flex;
@@ -117,7 +115,7 @@ body {
   margin: 0px;
 }
 .foot svg {
-  fill: #ff0;
+  fill: #fc0;
   width: 40px;
   height: 30px;
 }
