@@ -45,7 +45,6 @@ Vue.component('movies', {
     if (this.items.length < this.movies.length) this.scrollRight = true
   },
   beforeUpdate () {
-    console.log('before update')
     if (this.items[0].number > 0) {
       this.scrollLeft = true
     } else {

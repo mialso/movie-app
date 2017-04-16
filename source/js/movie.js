@@ -46,8 +46,7 @@ Vue.component('movie', {
   },
   methods: {
     handleBellAction () {
-      console.log(`bell action: ${this.movie.choosen}`)
-      this.$store.dispatch('toggleMovieSelection', this.movie.id)
+      this.$store.commit('toggleMovie', this.movie.id)
     }
   },
   props: {

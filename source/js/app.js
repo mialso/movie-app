@@ -25,22 +25,33 @@
   }
   const movieItems = Math.floor(window.innerWidth / 240)
 
+  window.document.addEventListener('keyup', (e) => {
+    switch (e.which) {
+      case 37: store.commit('moveLeft'); break
+      case 38: store.commit('moveDown'); break
+      case 39: store.commit('moveRight'); break
+      case 40: store.commit('moveUp'); break
+      case 32: store.commit('toggleMovie'); break
+      default: break 
+    }
+  })
   window.fetch('movies.json')
   .then(function(response) {
     if (response.ok) return response.json()
     throw new Error('Response error')
   })
   .then(function(jsonData) {
-    setTimeout(() => { 
-      const hourMilisec = 1000 * 60 * 60
-      const dayMilisec = hourMilisec * 24
-      const time = Date.now()
-      const today = new Date()
-      const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime() + dayMilisec
-      const tomorrowEnd = todayEnd + dayMilisec
-      const todayHoursLeft = 24 - today.getHours() - 1
-      const todayMovies = todayHoursLeft * 2
+    // some calculations to create showTime for each movie
+    const hourMilisec = 1000 * 60 * 60
+    const dayMilisec = hourMilisec * 24
+    const time = Date.now()
+    const today = new Date()
+    const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime() + dayMilisec
+    const tomorrowEnd = todayEnd + dayMilisec
+    const todayHoursLeft = 24 - today.getHours() - 1
+    const todayMovies = todayHoursLeft * 2
 
+    // populates movies data
       store.state.movies = jsonData.movies.map(item => {
         let showTime = 0
         if (item.id <= todayMovies) {
@@ -51,19 +62,21 @@
         return new Movie(item, showTime)
       })
 
-      store.state.movies.forEach(movie => {
-        if (movie.choosen) categories[2].items.push(movie.id)
-        if (movie.showTime < todayEnd) {
-          categories[0].items.push(movie.id)
-        } else {
-          categories[1].items.push(movie.id)
-        }
-      })
-      store.state.categories = categories.slice(0)
-      store.state.loading = false
-    }, 2000)
+    // populate categories data
+    store.state.movies.forEach(movie => {
+      if (movie.choosen) categories[2].items.push(movie.id)
+      if (movie.showTime < todayEnd) {
+        categories[0].items.push(movie.id)
+      } else {
+        categories[1].items.push(movie.id)
+      }
+    })
+    store.state.categories = categories.slice(0)
+
+    store.state.loading = false
   })
   .catch(function(error) {
+    // TODO create user error informer
   })
 
   window.setInterval(() => {store.state.appTime = Date.now()}, 60000)
@@ -75,15 +88,18 @@
       categories: categories.slice(0),
       movies: [],
       loading: true,
-      appTime: Date.now()
+      appTime: Date.now(),
+      currentCategory: ''
     },
     mutations: {
       moveRight: state => {
+        if (state.items[1].number >= state.categories[state.catItems[1].number].items.length - 1) return
         state.items = state.items.map((item) => {
           return new Item(item.number + 1)
         })
       },
       moveLeft: state => {
+        if (state.items[0].number === -1 || state.categories[state.catItems[1].number].items.length === 0) return
         state.items = state.items.map((item) => {
           return new Item(item.number - 1)
         })
@@ -99,7 +115,28 @@
           return new Item(item.number === 0 ? 2 : (item.number - 1))
         })
         state.items = calculateItems(movieItems)
-      }
+      },
+      toggleMovie: (state, movieId) => {
+        if (!movieId) {
+          const categoryItems = state.categories[state.catItems[1].number].items
+          const movies = state.movies
+            .filter(movie => categoryItems.indexOf(movie.id) !== -1)
+          if (movies.length === 0 || state.items[1].number > movies.length) return
+          var movieId = movies.sort((m1, m2) => m1.showTime - m2.showTime)[state.items[1].number].id
+        }
+        state.movies = state.movies.map((movie) => {
+          if (movie.id === movieId) {
+            movie.choosen 
+              ? state.categories[2].items = state.categories[2].items.filter((id) => id !== movieId)
+              : state.categories[2].items.push(movieId)
+            return Object.assign({}, movie, {choosen: !movie.choosen})
+          }
+          return movie
+        })
+        if (state.catItems[1].number === 2 && state.categories[2].items.length === state.items[1].number) {
+          store.commit('moveLeft')
+        }
+      },
     },
     actions: {
       previousMovie: (context, categoryId, firstMovieId) => {
@@ -111,17 +148,6 @@
         const category = context.state.categories.filter(cat => cat.id === categoryId)[0]
         if (category.items.slice(-1)[0] === lastMovieId) return
         context.commit('moveRight')
-      },
-      toggleMovieSelection: (context, movieId) => {
-        context.state.movies = context.state.movies.map((movie) => {
-          if (movie.id === movieId) {
-            movie.choosen 
-              ? context.state.categories[2].items = context.state.categories[2].items.filter((id) => id !== movieId)
-              : context.state.categories[2].items.push(movieId)
-            return Object.assign({}, movie, {choosen: !movie.choosen})
-          }
-          return movie
-        })
       },
     },
     getters: {
